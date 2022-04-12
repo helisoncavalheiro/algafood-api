@@ -1,5 +1,7 @@
 package com.helison.algafood.domain.service;
 
+import java.util.Optional;
+
 import com.helison.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.helison.algafood.domain.model.Cidade;
 import com.helison.algafood.domain.model.Estado;
@@ -22,13 +24,13 @@ public class CadastroCidadeService {
   public Cidade salvar(Cidade cidade) {
 
     Long estadoId = cidade.getEstado().getId();
-    Estado estado = estadoRepository.obter(estadoId);
+    Optional<Estado> estado = estadoRepository.findById(estadoId);
 
-    if(estado == null){
+    if (estado.isEmpty()) {
       throw new EntidadeNaoEncontradaException( String.format("Estado %d não existe", estadoId));
     }
     
-    cidade.setEstado(estado);
+    cidade.setEstado(estado.get());
 
     return cidadeRepository.salvar(cidade);
   }
