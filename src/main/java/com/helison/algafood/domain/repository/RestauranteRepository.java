@@ -1,13 +1,11 @@
 package com.helison.algafood.domain.repository;
 
-import java.util.List;
-
 import com.helison.algafood.domain.model.Restaurante;
 
-public interface RestauranteRepository {
-  
-  List<Restaurante> listar();
-  Restaurante obter(Long restauranteId);
-  Restaurante salvar(Restaurante restaurante);
-  void excluir(Long restauranteId);
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
+
 }
