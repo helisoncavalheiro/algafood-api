@@ -1,6 +1,7 @@
 package com.helison.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.helison.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.helison.algafood.domain.model.Cidade;
@@ -32,25 +33,25 @@ public class CidadeController {
 
   @GetMapping
   public List<Cidade> listar(){
-    return cidadeRepository.listar();
+    return cidadeRepository.findAll();
   }
 
   @GetMapping("/{cidadeId}")
   public ResponseEntity<Cidade> obter(@PathVariable Long cidadeId){
-    Cidade cidade = cidadeRepository.obter(cidadeId);
+    Optional<Cidade> cidade = cidadeRepository.findById(cidadeId);
 
-    if(cidade == null){
+    if (cidade.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
 
-    return ResponseEntity.ok(cidade);
+    return ResponseEntity.ok(cidade.get());
   }
 
   @PostMapping
   public ResponseEntity<?> adicionar(@RequestBody Cidade cidade){
     
     try {
-      Cidade cidadeSalva =cadastroCidade.salvar(cidade);
+      Cidade cidadeSalva = cadastroCidade.salvar(cidade);
 
       return ResponseEntity.status(HttpStatus.CREATED).body(cidadeSalva);
 
@@ -63,18 +64,18 @@ public class CidadeController {
   @PutMapping("/{cidadeId}")
   public ResponseEntity<?> atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade){
 
-    Cidade cidadeAtual = cidadeRepository.obter(cidadeId);
+    Optional<Cidade> cidadeAtual = cidadeRepository.findById(cidadeId);
 
-    if(cidadeAtual == null){
+    if (cidadeAtual.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
 
     try {
-      BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+      BeanUtils.copyProperties(cidade, cidadeAtual.get(), "id");
 
-      cidadeAtual = cadastroCidade.salvar(cidadeAtual);
+      Cidade cidadeSalva = cadastroCidade.salvar(cidadeAtual.get());
 
-      return ResponseEntity.ok(cidadeAtual);
+      return ResponseEntity.ok(cidadeSalva);
     } catch (EntidadeNaoEncontradaException e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
