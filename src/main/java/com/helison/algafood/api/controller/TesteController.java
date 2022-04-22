@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.helison.algafood.domain.model.Restaurante;
 import com.helison.algafood.domain.repository.RestauranteRepository;
+import com.helison.algafood.infrastructure.repository.spec.RestauranteSpecs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,13 @@ public class TesteController {
       BigDecimal taxaFreteFinal) {
 
     return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
+  }
+
+  @GetMapping("/restaurantes/com-frete-gratis")
+  public List<Restaurante> restaurantesComFreteGratis(String nome) {
+
+    return restauranteRepository
+        .findAll(RestauranteSpecs.comFreteGratis().and(RestauranteSpecs.comNomeSemelhante(nome)));
   }
 
 }
