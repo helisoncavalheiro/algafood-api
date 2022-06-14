@@ -24,3 +24,5 @@ insert into forma_pagamento(descricao) values ("PIX");
 insert into permissao(nome, descricao) values ("cliente", "Cliente do restaurante");
 insert into permissao(nome, descricao) values ("atendente", "Atendente do restaurante");
 insert into permissao(nome, descricao) values ("dono", "Dono do restaurante");
+
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3);
