@@ -1,6 +1,7 @@
 package com.helison.algafood.domain.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,5 +54,15 @@ public class Restaurante {
   @Embedded
   @JsonIgnore
   private Endereco endereco;
+
+  @Column(nullable = false, columnDefinition = "datetime")
+  @CreationTimestamp
+  @JsonIgnore
+  private LocalDateTime dataCadastro;
+  
+  @Column(nullable = false, columnDefinition = "datetime")
+  @UpdateTimestamp
+  @JsonIgnore
+  private LocalDateTime dataAtualizacao;
 
 }
