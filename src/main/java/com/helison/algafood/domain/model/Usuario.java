@@ -1,5 +1,6 @@
 package com.helison.algafood.domain.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,5 +44,5 @@ public class Usuario {
     joinColumns = @JoinColumn(name = "usuario_id"),
     inverseJoinColumns = @JoinColumn(name = "grupo_id")
   )
-  private List<Grupo> grupos;
+  private List<Grupo> grupos = new ArrayList<>();
 }
