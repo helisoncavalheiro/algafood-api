@@ -5,7 +5,23 @@
 		}
 	],
 	"settings": {
-		"java.configuration.updateBuildConfiguration": "automatic"
+		"java.configuration.updateBuildConfiguration": "automatic",
+		"sqltools.connections": [
+			{
+				"mysqlOptions": {
+					"authProtocol": "default"
+				},
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 33306,
+				"driver": "MySQL",
+				"database": "algafood-api",
+				"username": "algaworks",
+				"password": "algaworkspswd",
+				"connectionTimeout": 5000,
+				"name": "Algafood"
+			}
+		]
 	},
 	"launch": {
 		"version": "0.2.0",
@@ -17,6 +33,11 @@
 				"hostName": "localhost",
 				"port": "18081"
 			}
+		]
+	},
+	"extensions": {
+		"recommendations": [
+			"pivotal.vscode-boot-dev-pack"
 		]
 	}
 }
