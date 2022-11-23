@@ -34,4 +34,5 @@ build/
 
 ##PROPERTIES##
 src/main/resources/application.properties
+src/main/resources/flyway.properties
 .env

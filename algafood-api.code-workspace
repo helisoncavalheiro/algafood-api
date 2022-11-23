@@ -15,7 +15,7 @@
 				"server": "localhost",
 				"port": 33306,
 				"driver": "MySQL",
-				"database": "algafood-api",
+				"database": "algafood",
 				"username": "algaworks",
 				"password": "algaworkspswd",
 				"connectionTimeout": 5000,
