@@ -1,6 +1,8 @@
 package com.helison.algafood.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.helison.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.helison.algafood.domain.exception.NegocioException;
 import com.helison.algafood.domain.model.Restaurante;
 import com.helison.algafood.domain.repository.RestauranteRepository;
 import com.helison.algafood.domain.service.CadastroRestauranteService;
@@ -40,19 +42,27 @@ public class RestauranteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Restaurante adicionar(@RequestBody Restaurante restaurante) {
-        return cadastroRestaurante.salvar(restaurante);
+        try {
+            return cadastroRestaurante.salvar(restaurante);
+        } catch (EntidadeNaoEncontradaException e) {
+
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PutMapping("/{restauranteId}")
     public ResponseEntity<Restaurante> atualizar(@RequestBody Restaurante restaurante, @PathVariable Long restauranteId) {
         Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-        BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro",
-                "restaurantes");
+        BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "restaurantes");
 
-        Restaurante restauranteSalvo = cadastroRestaurante.salvar(restauranteAtual);
+        try {
+            Restaurante restauranteSalvo = cadastroRestaurante.salvar(restauranteAtual);
 
-        return ResponseEntity.ok(restauranteSalvo);
+            return ResponseEntity.ok(restauranteSalvo);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{restauranteId}")

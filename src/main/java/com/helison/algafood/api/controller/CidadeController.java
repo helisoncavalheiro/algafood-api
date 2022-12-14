@@ -1,5 +1,7 @@
 package com.helison.algafood.api.controller;
 
+import com.helison.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.helison.algafood.domain.exception.NegocioException;
 import com.helison.algafood.domain.model.Cidade;
 import com.helison.algafood.domain.repository.CidadeRepository;
 import com.helison.algafood.domain.service.CadastroCidadeService;
@@ -36,7 +38,11 @@ public class CidadeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Cidade adicionar(@RequestBody Cidade cidade) {
-        return cadastroCidade.salvar(cidade);
+        try {
+            return cadastroCidade.salvar(cidade);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PutMapping("/{cidadeId}")
@@ -46,9 +52,12 @@ public class CidadeController {
 
         BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 
-        cidadeAtual = cadastroCidade.salvar(cidadeAtual);
-        return ResponseEntity.ok(cidadeAtual);
-
+        try {
+            cidadeAtual = cadastroCidade.salvar(cidadeAtual);
+            return ResponseEntity.ok(cidadeAtual);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{cidadeId}")
