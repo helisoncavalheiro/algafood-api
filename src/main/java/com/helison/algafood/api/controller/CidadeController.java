@@ -1,6 +1,6 @@
 package com.helison.algafood.api.controller;
 
-import com.helison.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.helison.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.helison.algafood.domain.exception.NegocioException;
 import com.helison.algafood.domain.model.Cidade;
 import com.helison.algafood.domain.repository.CidadeRepository;
@@ -40,7 +40,7 @@ public class CidadeController {
     public Cidade adicionar(@RequestBody Cidade cidade) {
         try {
             return cadastroCidade.salvar(cidade);
-        } catch (EntidadeNaoEncontradaException e) {
+        } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage());
         }
     }
@@ -55,7 +55,7 @@ public class CidadeController {
         try {
             cidadeAtual = cadastroCidade.salvar(cidadeAtual);
             return ResponseEntity.ok(cidadeAtual);
-        } catch (EntidadeNaoEncontradaException e) {
+        } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage());
         }
     }

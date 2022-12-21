@@ -1,7 +1,7 @@
 package com.helison.algafood.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.helison.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.helison.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.helison.algafood.domain.exception.NegocioException;
 import com.helison.algafood.domain.model.Restaurante;
 import com.helison.algafood.domain.repository.RestauranteRepository;
@@ -44,9 +44,9 @@ public class RestauranteController {
     public Restaurante adicionar(@RequestBody Restaurante restaurante) {
         try {
             return cadastroRestaurante.salvar(restaurante);
-        } catch (EntidadeNaoEncontradaException e) {
+        } catch (CozinhaNaoEncontradaException e) {
 
-            throw new NegocioException(e.getMessage());
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 
@@ -60,8 +60,8 @@ public class RestauranteController {
             Restaurante restauranteSalvo = cadastroRestaurante.salvar(restauranteAtual);
 
             return ResponseEntity.ok(restauranteSalvo);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+        } catch (CozinhaNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 

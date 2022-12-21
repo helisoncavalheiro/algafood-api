@@ -1,7 +1,7 @@
 package com.helison.algafood.domain.service;
 
 import com.helison.algafood.domain.exception.EntidadeEmUsoException;
-import com.helison.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.helison.algafood.domain.exception.RestauranteNaoEcontradoException;
 import com.helison.algafood.domain.model.Cozinha;
 import com.helison.algafood.domain.model.Restaurante;
 import com.helison.algafood.domain.repository.RestauranteRepository;
@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 public class CadastroRestauranteService {
 
     private static final String MSG_RESTAURANTE_EM_USO = "Restaurante %d não pode ser excluído pois está em uso por outra entidade";
-
-    private static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Restaurante de id %d não encontrado";
 
     @Autowired
     private RestauranteRepository restauranteRepository;
@@ -37,7 +35,7 @@ public class CadastroRestauranteService {
         try {
             restauranteRepository.deleteById(restauranteId);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId));
+            throw new RestauranteNaoEcontradoException(restauranteId);
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
                     String.format(MSG_RESTAURANTE_EM_USO, restauranteId));
@@ -46,7 +44,7 @@ public class CadastroRestauranteService {
 
     public Restaurante buscarOuFalhar(Long restauranteId) {
         return restauranteRepository.findById(restauranteId).orElseThrow(
-                () -> new EntidadeNaoEncontradaException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
+                () -> new RestauranteNaoEcontradoException(restauranteId));
     }
 
 }
